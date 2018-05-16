@@ -39,6 +39,8 @@ public class MainActivity extends AppCompatActivity {
     private String[] mountainNames = {"Matterhorn","Mont Blanc","Denali"};
     private String[] mountainLocations = {"Alps","Alps","Alaska"};
     private int[] mountainHeights ={4478,4808,6190};
+    private List<Mountain> mountainList=new ArrayList<Mountain>();
+
 
     @Override
     public boolean onCreateOptionsMenu (Menu menu) {
@@ -75,13 +77,15 @@ public class MainActivity extends AppCompatActivity {
 
         Mountain m = new Mountain("K2");
         Mountain m2 = new Mountain("Fuji","Japan",3776);
+        mountainList.add(m);
+        mountainList.add(m2);
 
         String[] rawData = {"Matterhorn","Mont Blanc","Denali"};
         // 2. Create a List object with your array from step 1 as in-data
         List<String> listData = new ArrayList<String>(Arrays.asList(rawData));
         // 3. Create an ArrayAdapter object that connects
         ArrayAdapter adapter = new ArrayAdapter(getApplicationContext(),R.layout.list_item_textview,
-                R.id.my_item_textview,listData);
+                R.id.my_item_textview,mountainList);
 
         ListView myListView = (ListView)findViewById(R.id.my_listview);
         myListView.setAdapter(adapter);
@@ -89,7 +93,8 @@ public class MainActivity extends AppCompatActivity {
         myListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(getApplicationContext(), mountainNames[position] + "\n" + mountainLocations[position] + "\n" + mountainHeights[position], Toast.LENGTH_SHORT).show();
+                Mountain mountain=mountainList.get(position);
+                Toast.makeText(getApplicationContext(), mountain.info() , Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -110,6 +115,7 @@ public class MainActivity extends AppCompatActivity {
 
             // Will contain the raw JSON response as a Java string.
             String jsonStr = null;
+
 
             try {
                 // Construct the URL for the Internet service
@@ -142,6 +148,7 @@ public class MainActivity extends AppCompatActivity {
                     return null;
                 }
                 jsonStr = buffer.toString();
+
                 return jsonStr;
             } catch (IOException e) {
                 Log.e("PlaceholderFragment", "Error ", e);
@@ -160,6 +167,8 @@ public class MainActivity extends AppCompatActivity {
                     }
                 }
             }
+
+
         }
         @Override
         protected void onPostExecute(String o) {
