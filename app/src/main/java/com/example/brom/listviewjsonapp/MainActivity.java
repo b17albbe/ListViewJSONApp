@@ -48,6 +48,9 @@ public class MainActivity extends AppCompatActivity {
 
         Log.d("brom-debug",kjell);
 
+        Mountain m = new Mountain("K2");
+        Mountain m2 = new Mountain("Fuji","Japan",3776);
+
         String[] rawData = {"Matterhorn","Mont Blanc","Denali"};
         // 2. Create a List object with your array from step 1 as in-data
         List<String> listData = new ArrayList<String>(Arrays.asList(rawData));
@@ -69,6 +72,10 @@ public class MainActivity extends AppCompatActivity {
 
 
     private class FetchData extends AsyncTask<Void,Void,String>{
+
+
+
+
         @Override
         protected String doInBackground(Void... params) {
             // These two variables need to be declared outside the try/catch
@@ -81,7 +88,7 @@ public class MainActivity extends AppCompatActivity {
 
             try {
                 // Construct the URL for the Internet service
-                URL url = new URL("_ENTER_THE_URL_TO_THE_PHP_SERVICE_SERVING_JSON_HERE_");
+                URL url = new URL("http://wwwlab.iit.his.se/brom/kurser/mobilprog/dbservice/admin/getdataasjson.php?type=brom");
 
                 // Create the request to the PHP-service, and open the connection
                 urlConnection = (HttpURLConnection) url.openConnection();
@@ -134,7 +141,7 @@ public class MainActivity extends AppCompatActivity {
             super.onPostExecute(o);
             // This code executes after we have received our data. The String object o holds
             // the un-parsed JSON string or is null if we had an IOException during the fetch.
-
+            Log.d("AlbinLog",o);
             // Implement a parsing code that loops through the entire JSON and creates objects
             // of our newly created Mountain class.
         }
