@@ -99,7 +99,7 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(), mountain.info() , Toast.LENGTH_SHORT).show();
             }
         });
-
+        new FetchData().execute();
     }
 
 
@@ -190,10 +190,14 @@ public class MainActivity extends AppCompatActivity {
                 int size= obj.getInt("size");
                 String location= obj.getString("location");
 
-                Mountain mobj = new Mountain(location,name,size);
+                Mountain mobj = new Mountain(name,location,size);
                 mountainList.add(mobj);
-
+                Log.d("albinecool",mobj.info());
             }
+                ArrayAdapter adapter = new ArrayAdapter(getApplicationContext(),R.layout.list_item_textview,
+                        R.id.my_item_textview,mountainList);
+                ListView myListView = (ListView)findViewById(R.id.my_listview);
+                myListView.setAdapter(adapter);
             } catch (JSONException e) {
                 Log.e("brom","E:"+e.getMessage());
             }
