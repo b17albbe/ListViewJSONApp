@@ -12,6 +12,10 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -75,10 +79,8 @@ public class MainActivity extends AppCompatActivity {
 
         Log.d("brom-debug",kjell);
 
-        Mountain m = new Mountain("K2");
-        Mountain m2 = new Mountain("Fuji","Japan",3776);
-        mountainList.add(m);
-        mountainList.add(m2);
+
+
 
         String[] rawData = {"Matterhorn","Mont Blanc","Denali"};
         // 2. Create a List object with your array from step 1 as in-data
@@ -176,6 +178,25 @@ public class MainActivity extends AppCompatActivity {
             // This code executes after we have received our data. The String object o holds
             // the un-parsed JSON string or is null if we had an IOException during the fetch.
             Log.d("AlbinLog",o);
+            mountainList.clear();
+            try {
+                // Ditt JSON-objekt som Java
+                JSONArray json1 = new JSONArray(o);
+
+            for (int k=0;k<json1.length();k++) {
+                JSONObject obj= json1.getJSONObject(k);
+                String id= obj.getString("ID");
+                String name= obj.getString("name");
+                int size= obj.getInt("size");
+                String location= obj.getString("location");
+
+                Mountain mobj = new Mountain(location,name,size);
+                mountainList.add(mobj);
+
+            }
+            } catch (JSONException e) {
+                Log.e("brom","E:"+e.getMessage());
+            }
             // Implement a parsing code that loops through the entire JSON and creates objects
             // of our newly created Mountain class.
         }
